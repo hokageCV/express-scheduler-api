@@ -1,19 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { z, AnyZodObject } from "zod";
 
-export const TimeSlotSchema = z.object({
+export const UserSchema = z.object({
   body: z.object({
-    startTime: z
-      .string()
-      .refine((data) => !isNaN(new Date(data).getTime()), "Not a valid date")
-      .refine(
-        (data) => new Date(data) > new Date(),
-        "Start time must be greater than current time"
-      ),
+    email: z.string().email(),
   }),
 });
 
-export const ValidateTimeSlot =
+export const ValidateUser =
   (schema: AnyZodObject) => async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.parseAsync({
@@ -26,5 +20,3 @@ export const ValidateTimeSlot =
       return res.status(400).json(error);
     }
   };
-
-export type TimeSlot = z.infer<typeof TimeSlotSchema>;

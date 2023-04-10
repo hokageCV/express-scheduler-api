@@ -1,9 +1,10 @@
-import express, { Request, Response, NextFunction } from "express";
-import { z, AnyZodObject } from "zod";
-import { TimeSlotSchema, ValidateTimeSlot } from "./modules/timeSlot";
+import express, { Request, Response } from "express";
+import Router from "./router";
 
 import morgan from "morgan";
 import cors from "cors";
+import { createNewUser, signInUser } from "./handlers/user";
+import { protect } from "./middleware/auth";
 
 const app = express();
 
@@ -12,12 +13,13 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req: Request, res: Response): Response => {
+app.get("/", (req: Request, res: Response) => {
   return res.json({ message: "Validation with Zod 👊" });
 });
 
-app.post("/create", ValidateTimeSlot(TimeSlotSchema), (req: Request, res: Response): Response => {
-  return res.json({ ...req.body });
-});
+app.use("/api", protect, Router);
+
+app.post("/auth/signup", createNewUser);
+app.post("/auth/signin", signInUser);
 
 export default app;
