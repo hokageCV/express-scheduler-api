@@ -1,16 +1,9 @@
 import { Router } from "express";
-
-import { Validate } from "../middleware/validate";
-import { inputForAuth } from "../model/inputForAuth";
-import { createNewUser, signInUser } from "../handlers/user";
-// import { Validate } from "../middleware/validate.js";
-// import { inputForAuth } from "../model/inputForAuth.js";
-// import { createNewUser, signInUser } from "../handlers/user.js";
-
+import { Validate } from "../middleware/validate.js";
+import { inputForAuth } from "../model/inputForAuth.js";
+import { createNewUser, signInUser } from "../handlers/user.js";
 const authRouter = Router();
-
 // ======================================
-
 /**
  * @openapi
  * /auth/signup:
@@ -54,9 +47,7 @@ const authRouter = Router();
  *       500:
  *         description: Internal server error
  */
-
 authRouter.post("/signup", Validate(inputForAuth), createNewUser);
-
 /**
  * @openapi
  * /auth/signin:
@@ -98,9 +89,6 @@ authRouter.post("/signup", Validate(inputForAuth), createNewUser);
  *       500:
  *         description: Internal server error
  */
-
 authRouter.post("/signin", Validate(inputForAuth), signInUser);
-
 // ======================================
-
 export default authRouter;

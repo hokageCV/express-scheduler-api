@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { TimeSlotSchema } from "./timeslot";
+// import { TimeSlotSchema } from "./timeslot.js";
 
 /**
  * @openapi

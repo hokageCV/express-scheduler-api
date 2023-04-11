@@ -1,8 +1,10 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 import swaggerDocs from "./utils/swagger";
+// import swaggerDocs from "./utils/swagger.js";
 
 import app from "./server";
+// import app from "./server.js";
 import mongoose from "mongoose";
 
 const PORT = process.env.PORT || 3000;

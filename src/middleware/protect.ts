@@ -1,4 +1,5 @@
 import { ExpressAPIHandler } from "../types";
+// import { ExpressAPIHandler } from "../types.js";
 import jwt from "jsonwebtoken";
 
 export const protect: ExpressAPIHandler = (req, res, next) => {

@@ -1,6 +1,9 @@
 import type { ExpressAPIHandler } from "../types";
 import { UserModel } from "../model/user";
 import { hashPassword, createJWT, comparePasswords } from "../utils/auth";
+// import type { ExpressAPIHandler } from "../types.js";
+// import { UserModel } from "../model/user.js";
+// import { hashPassword, createJWT, comparePasswords } from "../utils/auth.js";
 
 export const createNewUser: ExpressAPIHandler = async (req, res) => {
   const { name, email, password } = req.body;

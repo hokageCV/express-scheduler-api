@@ -1,11 +1,16 @@
 import express, { Request, Response } from "express";
-import timeRouter from "./router/timeRouter";
 
 import morgan from "morgan";
 import cors from "cors";
-import { protect } from "./middleware/protect";
 
+import { protect } from "./middleware/protect";
+import timeRouter from "./router/timeRouter";
 import authRouter from "./router/authRouter";
+import gcalRouter from "./router/gcalRouter";
+// import { protect } from "./middleware/protect.js";
+// import timeRouter from "./router/timeRouter.js";
+// import authRouter from "./router/authRouter.js";
+// import gcalRouter from "./router/gcalRouter.js";
 
 const app = express();
 
@@ -20,5 +25,6 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api", protect, timeRouter);
 app.use("/auth", authRouter);
+app.use("/google", gcalRouter);
 
 export default app;

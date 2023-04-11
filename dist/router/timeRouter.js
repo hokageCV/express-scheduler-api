@@ -1,29 +1,10 @@
 import { Router } from "express";
-import {
-  bookTimeSlot,
-  createTimeSlot,
-  deleteTimeSlot,
-  getMyBookedSlots,
-  getTimeSlots,
-} from "../handlers/timeslot";
-import { Validate } from "../middleware/validate";
-import { inputForCreateSlot } from "../model/inputForCreateSlot";
-import { inputForGetTimeSlot } from "../model/inputForGetTimeSlot";
-// import {
-//   bookTimeSlot,
-//   createTimeSlot,
-//   deleteTimeSlot,
-//   getMyBookedSlots,
-//   getTimeSlots,
-// } from "../handlers/timeslot.js";
-// import { Validate } from "../middleware/validate.js";
-// import { inputForCreateSlot } from "../model/inputForCreateSlot.js";
-// import { inputForGetTimeSlot } from "../model/inputForGetTimeSlot.js";
-
+import { Validate } from "../middleware/validate.js";
+import { inputForCreateSlot } from "../model/inputForCreateSlot.js";
+import { bookTimeSlot, createTimeSlot, deleteTimeSlot, getMyBookedSlots, getTimeSlots, } from "../handlers/timeslot.js";
+import { inputForGetTimeSlot } from "../model/inputForGetTimeSlot.js";
 const timeRouter = Router();
-
 // ======================================
-
 /**
  * @openapi
  * /timeslot/booked:
@@ -43,7 +24,6 @@ const timeRouter = Router();
  *         description: An error occurred while getting the booked time slots
  */
 timeRouter.get("/timeslot/booked", getMyBookedSlots);
-
 /**
  * @openapi
  * /timeslot:
@@ -56,7 +36,6 @@ timeRouter.get("/timeslot/booked", getMyBookedSlots);
  *         description: App is up and running
  */
 timeRouter.get("/timeslot", Validate(inputForGetTimeSlot), getTimeSlots);
-
 /**
  * @openapi
  * /timeslot:
@@ -83,9 +62,7 @@ timeRouter.get("/timeslot", Validate(inputForGetTimeSlot), getTimeSlots);
  *       500:
  *         description: An error occurred while creating the time slot
  */
-
 timeRouter.post("/timeslot", Validate(inputForCreateSlot), createTimeSlot);
-
 /**
  * @openapi
  * /timeslot/{id}:
@@ -128,7 +105,6 @@ timeRouter.post("/timeslot", Validate(inputForCreateSlot), createTimeSlot);
  *         description: An error occurred while booking the time slot
  */
 timeRouter.put("/timeslot/:id", bookTimeSlot);
-
 /**
  * @openapi
  * /timeslot/{id}:
@@ -151,9 +127,6 @@ timeRouter.put("/timeslot/:id", bookTimeSlot);
  *       500:
  *         description: An error occurred while deleting the time slot
  */
-
 timeRouter.delete("/timeslot/:id", deleteTimeSlot);
-
 // ======================================
-
 export default timeRouter;

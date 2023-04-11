@@ -1,6 +1,7 @@
 import type { ExpressAPIHandler } from "../types";
 import { TimeSlotModel } from "../model/timeslot";
-import exp from "constants";
+// import type { ExpressAPIHandler } from "../types.js";
+// import { TimeSlotModel } from "../model/timeslot.js";
 
 export const createTimeSlot: ExpressAPIHandler = async (req, res) => {
   const { year, month, date, hour, minutes } = req.body;
