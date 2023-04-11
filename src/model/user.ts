@@ -1,6 +1,29 @@
 import { Schema, model } from "mongoose";
 import { TimeSlotSchema } from "./timeslot";
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: The name of the user
+ *         email:
+ *           type: string
+ *           description: The email address of the user
+ *         password:
+ *           type: string
+ *           description: The password of the user
+ *         slot:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/TimeSlot'
+ *           description: The time slots booked by the user
+ */
+
 interface UserSchemaType {
   name: string;
   email: string;

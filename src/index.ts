@@ -1,5 +1,6 @@
 import * as dotenv from "dotenv";
 dotenv.config();
+import swaggerDocs from "./utils/swagger";
 
 import app from "./server";
 import mongoose from "mongoose";
@@ -12,6 +13,7 @@ mongoose
   .then(() => {
     app.listen(PORT, () => {
       console.log(`listenting on port ${PORT}👂👂 `);
+      swaggerDocs(app, PORT as number);
     });
   })
   .catch((err: any) => {

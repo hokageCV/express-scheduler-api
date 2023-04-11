@@ -1,10 +1,11 @@
 import express, { Request, Response } from "express";
-import Router from "./router";
+import timeRouter from "./router/timeRouter";
 
 import morgan from "morgan";
 import cors from "cors";
-import { createNewUser, signInUser } from "./handlers/user";
-import { protect } from "./middleware/auth";
+import { protect } from "./middleware/protect";
+
+import authRouter from "./router/authRouter";
 
 const app = express();
 
@@ -14,12 +15,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req: Request, res: Response) => {
-  return res.json({ message: "Validation with Zod 👊" });
+  return res.json({ message: "schedule meets effortlessly" });
 });
 
-app.use("/api", protect, Router);
-
-app.post("/auth/signup", createNewUser);
-app.post("/auth/signin", signInUser);
+app.use("/api", protect, timeRouter);
+app.use("/auth", authRouter);
 
 export default app;

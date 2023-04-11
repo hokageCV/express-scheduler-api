@@ -1,0 +1,52 @@
+components:
+  schemas:
+    CreateTimeSlotRequest:
+      type: object
+      required:
+        - body
+      properties:
+        body:
+          type: object
+          properties:
+            year:
+              type: integer
+              minimum: 2023
+            month:
+              type: integer
+              minimum: 0
+              maximum: 11
+            date:
+              type: integer
+              minimum: 1
+              maximum: 28
+            hour:
+              type: integer
+              minimum: 0
+              maximum: 23
+            minutes:
+              type: integer
+              minimum: 0
+              maximum: 59
+    CreateTimeSlotResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            slot_created_for:
+              type: object
+              properties:
+                start:
+                  type: string
+                  format: date-time
+                end:
+                  type: string
+                  format: date-time
+                isBooked:
+                  type: boolean
+                hostEmail:
+                  type: string
+                nonHostEmail:
+                  type: string
+                _id:
+                  type: string

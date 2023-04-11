@@ -1,13 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { z, AnyZodObject } from "zod";
+import { AnyZodObject } from "zod";
 
-export const UserSchema = z.object({
-  body: z.object({
-    email: z.string().email(),
-  }),
-});
-
-export const ValidateUser =
+export const Validate =
   (schema: AnyZodObject) => async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.parseAsync({
