@@ -31,16 +31,18 @@ Documetation is created using Swagger. It can be referred [here](https://express
 
 First I set up the basic structure like the handlers, routes, models & database.
 
+Initially for the ORM I used prisma. But it seemed alienated and considering the time constraint I switched to mongoose.
+
 Then I created schema in zod for validation for the input. I liked its simplicity and the way it presents the errors. All the functions out of the box are very useful.
 
-After than I created the documentation using swagger. It is good in projects where several people are working since it provides a structure the documentation. But personally I didn't liked it much due to its highly verbose syntax.
+After than I created the documentation using swagger.Refered to some youtube videos. It is easy but a bit verbose.
 
 Then comes the calendar integration part, which was the most challenging. I had to learn a lot about OAuth and how it works. [This](https://youtu.be/hHRFjbGTEOk) video explains it very well.
-Main problem that I was facing was to get the token from browser to server, this cosumed a lot of time.
-Later I found about OAuth from postman itself.
+Main problem that I was facing was to get the token from browser to server, this cosumed a lot of time.  
+Later I found that we can do OAuth from postman itself and was relieved.
 
 Then using the calendar API, I function that was creating events in the calendar into the handler that booked the slot. When the first event was created in the calendar, it felt like a huge achievement. Later I added the google meet link to the event.
 
 After that I created the docker file and created an image of the project.
 
-At last, I deployed the project on Railway.
+At last, I deployed the project on Railway. It can be accessed at `https://express-scheduler-api-production.up.railway.app `.
