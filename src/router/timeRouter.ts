@@ -127,7 +127,7 @@ timeRouter.post("/timeslot", Validate(inputForCreateSlot), createTimeSlot);
  *       500:
  *         description: An error occurred while booking the time slot
  */
-timeRouter.put("/timeslot/:id", bookTimeSlot);
+timeRouter.put("/timeslot", bookTimeSlot);
 
 /**
  * @openapi

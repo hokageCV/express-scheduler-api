@@ -30,6 +30,7 @@ interface UserSchemaType {
   email: string;
   password: string;
   slot: TimeSlotSchema[];
+  googleTokens?: string;
 }
 
 const UserSchema = new Schema<UserSchemaType>({
@@ -37,6 +38,7 @@ const UserSchema = new Schema<UserSchemaType>({
   email: { type: String, trim: true, required: true, lowercase: true, unique: true },
   password: { type: String, required: true },
   slot: [{ type: Schema.Types.ObjectId, ref: "TimeSlot" }],
+  googleTokens: { type: String, default: "" },
 });
 
 export const UserModel = model<UserSchemaType>("User", UserSchema);

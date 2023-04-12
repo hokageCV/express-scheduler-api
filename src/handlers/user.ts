@@ -15,7 +15,7 @@ export const createNewUser: ExpressAPIHandler = async (req, res) => {
 
     const token = createJWT(user.id, user.email);
 
-    return res.json({ data: { email, token } });
+    res.json({ data: { email, token } });
   } catch (err) {
     console.log(err);
   }

@@ -1,11 +1,12 @@
 import type { ExpressAPIHandler } from "../types";
 import { TimeSlotModel } from "../model/timeslot";
-// import type { ExpressAPIHandler } from "../types.js";
-// import { TimeSlotModel } from "../model/timeslot.js";
+
+import { createGCalEvent } from "../utils/gcal";
+import { oAuth2Client } from "../utils/googleAuth";
 
 export const createTimeSlot: ExpressAPIHandler = async (req, res) => {
   const { year, month, date, hour, minutes } = req.body;
-  const hostEmail = req.body.user.email;
+  const hostEmail = req.user.email;
   const start = new Date(year, month, date, hour, minutes);
   const end = new Date(year, month, date, hour + 1, minutes);
 
@@ -31,8 +32,8 @@ export const getTimeSlots: ExpressAPIHandler = async (req, res) => {
 };
 
 export const bookTimeSlot: ExpressAPIHandler = async (req, res) => {
-  const { id } = req.params;
-  const nonHostEmail = req.body.user.email;
+  const { id, token } = req.body;
+  const nonHostEmail = req.user.email;
 
   try {
     const slotExits = await TimeSlotModel.findById({ _id: id });
@@ -49,6 +50,15 @@ export const bookTimeSlot: ExpressAPIHandler = async (req, res) => {
       isBooked: true,
     });
 
+    // ==============================
+    oAuth2Client.setCredentials({ access_token: token });
+
+    const { start, end, hostEmail } = slotExits;
+
+    await createGCalEvent(start, end, hostEmail, nonHostEmail);
+
+    //===============================
+
     return res.json({ data: { "slot booked for: ": timeslot } });
   } catch (err) {
     console.log(err);
@@ -57,6 +67,7 @@ export const bookTimeSlot: ExpressAPIHandler = async (req, res) => {
 
 export const deleteTimeSlot: ExpressAPIHandler = async (req, res) => {
   const { id } = req.params;
+  const requesterEmail = req.user.email;
 
   try {
     const slotExits = await TimeSlotModel.findById({ _id: id });
@@ -64,7 +75,7 @@ export const deleteTimeSlot: ExpressAPIHandler = async (req, res) => {
       return res.status(404).json({ error: "slot does not exist" });
     }
 
-    if (slotExits.hostEmail !== req.body.user.email) {
+    if (slotExits.hostEmail !== requesterEmail) {
       return res.status(401).json({ error: "you are not the host" });
     }
 
@@ -81,7 +92,7 @@ export const deleteTimeSlot: ExpressAPIHandler = async (req, res) => {
 };
 
 export const getMyBookedSlots: ExpressAPIHandler = async (req, res) => {
-  const myEmail = req.body.user.email;
+  const myEmail = req.user.email;
 
   try {
     const bookedSlots = await TimeSlotModel.find({

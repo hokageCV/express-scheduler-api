@@ -15,10 +15,12 @@ export const protect: ExpressAPIHandler = (req, res, next) => {
 
   try {
     const user = jwt.verify(token, process.env.SECRET_STRING!);
-    req.body.user = user;
+
+    req.user = user;
     next();
-  } catch (e) {
-    console.error(e);
-    return res.status(401).json({ message: "somethings wrong I can feel it" });
+  } catch (err) {
+    return res
+      .status(401)
+      .json({ message: "somethings wrong I can feel it. heres the error:", err });
   }
 };
