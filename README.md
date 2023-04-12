@@ -22,7 +22,6 @@ Documetation is created using Swagger. It can be referred [here](https://express
   - Swagger is good for large projects but personally I didn't liked it much due to its highly verbose syntax
 - Docker
   - This was a bit challenging part
-  -
 - Google Calendar Integration
   - This was the most challenging part as well as the part where I learnt the most
   - Most of the time for the project creation went in this
