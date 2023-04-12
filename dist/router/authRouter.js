@@ -1,8 +1,13 @@
-import { Router } from "express";
-import { Validate } from "../middleware/validate.js";
-import { inputForAuth } from "../model/inputForAuth.js";
-import { createNewUser, signInUser } from "../handlers/user.js";
-const authRouter = Router();
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const validate_1 = require("../middleware/validate");
+const inputForAuth_1 = require("../model/inputForAuth");
+const user_1 = require("../handlers/user");
+// import { Validate } from "../middleware/validate.js";
+// import { inputForAuth } from "../model/inputForAuth.js";
+// import { createNewUser, signInUser } from "../handlers/user.js";
+const authRouter = (0, express_1.Router)();
 // ======================================
 /**
  * @openapi
@@ -47,7 +52,7 @@ const authRouter = Router();
  *       500:
  *         description: Internal server error
  */
-authRouter.post("/signup", Validate(inputForAuth), createNewUser);
+authRouter.post("/signup", (0, validate_1.Validate)(inputForAuth_1.inputForAuth), user_1.createNewUser);
 /**
  * @openapi
  * /auth/signin:
@@ -89,6 +94,6 @@ authRouter.post("/signup", Validate(inputForAuth), createNewUser);
  *       500:
  *         description: Internal server error
  */
-authRouter.post("/signin", Validate(inputForAuth), signInUser);
+authRouter.post("/signin", (0, validate_1.Validate)(inputForAuth_1.inputForAuth), user_1.signInUser);
 // ======================================
-export default authRouter;
+exports.default = authRouter;

@@ -1,12 +1,15 @@
-import { z } from "zod";
-export const inputForCreateSlot = z.object({
-    body: z
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.inputForCreateSlot = void 0;
+const zod_1 = require("zod");
+exports.inputForCreateSlot = zod_1.z.object({
+    body: zod_1.z
         .object({
-        year: z.number().int().min(2023),
-        month: z.number().int().min(0).max(11),
-        date: z.number().int().min(1).max(28),
-        hour: z.number().int().min(0).max(23),
-        minutes: z.number().int().min(0).max(59),
+        year: zod_1.z.number().int().min(2023),
+        month: zod_1.z.number().int().min(0).max(11),
+        date: zod_1.z.number().int().min(1).max(28),
+        hour: zod_1.z.number().int().min(0).max(23),
+        minutes: zod_1.z.number().int().min(0).max(59),
     })
         .refine((data) => {
         const inputDate = new Date(data.year, data.month, data.date, data.hour, data.minutes);

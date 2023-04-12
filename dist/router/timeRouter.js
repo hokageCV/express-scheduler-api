@@ -1,41 +1,124 @@
-import { Router } from "express";
-import { Validate } from "../middleware/validate.js";
-import { inputForCreateSlot } from "../model/inputForCreateSlot.js";
-import { bookTimeSlot, createTimeSlot, deleteTimeSlot, getMyBookedSlots, getTimeSlots, } from "../handlers/timeslot.js";
-import { inputForGetTimeSlot } from "../model/inputForGetTimeSlot.js";
-const timeRouter = Router();
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const timeslot_1 = require("../handlers/timeslot");
+const validate_1 = require("../middleware/validate");
+const inputForCreateSlot_1 = require("../model/inputForCreateSlot");
+const inputForGetTimeSlot_1 = require("../model/inputForGetTimeSlot");
+// import {
+//   bookTimeSlot,
+//   createTimeSlot,
+//   deleteTimeSlot,
+//   getMyBookedSlots,
+//   getTimeSlots,
+// } from "../handlers/timeslot.js";
+// import { Validate } from "../middleware/validate.js";
+// import { inputForCreateSlot } from "../model/inputForCreateSlot.js";
+// import { inputForGetTimeSlot } from "../model/inputForGetTimeSlot.js";
+const timeRouter = (0, express_1.Router)();
 // ======================================
 /**
  * @openapi
  * /timeslot/booked:
  *   get:
  *     tags:
- *       - TimeSlot
- *     summary: Get all time slots that the current user has booked
+ *     - TimeSlot
+ *     summary: Get booked slots
+ *     description: Get all the booked time slots for the current user
  *     responses:
  *       200:
- *         description: A list of time slots that the current user has booked
+ *         description: Success
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *       500:
- *         description: An error occurred while getting the booked time slots
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     booked slots:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                           start:
+ *                             type: string
+ *                             format: date-time
+ *                           end:
+ *                             type: string
+ *                             format: date-time
+ *                           hostEmail:
+ *                             type: string
+ *                           nonHostEmail:
+ *                             type: string
+ *                           isBooked:
+ *                             type: boolean
  */
-timeRouter.get("/timeslot/booked", getMyBookedSlots);
+timeRouter.get("/timeslot/booked", timeslot_1.getMyBookedSlots);
 /**
  * @openapi
  * /timeslot:
- *  get:
+ *   get:
  *     tags:
  *     - TimeSlot
- *     summary: Get all time slots
+ *     summary: Get all available time slots for a given host
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               hostEmail:
+ *                 type: string
+ *                 description: The email of the host whose available time slots are to be retrieved.
+ *                 example: john@example.com
  *     responses:
- *       200:
- *         description: App is up and running
+ *       '200':
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     available slots:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             description: The ID of the time slot.
+ *                             example: 615cc9c9a4c34648cbe0f0e4
+ *                           start:
+ *                             type: string
+ *                             format: date-time
+ *                             description: The start time of the time slot.
+ *                             example: 2023-05-25T09:00:00.000Z
+ *                           end:
+ *                             type: string
+ *                             format: date-time
+ *                             description: The end time of the time slot.
+ *                             example: 2023-05-25T10:00:00.000Z
+ *                           isBooked:
+ *                             type: boolean
+ *                             description: Indicates whether the time slot is booked or not.
+ *                             example: false
+ *                           hostEmail:
+ *                             type: string
+ *                             description: The email of the host who created the time slot.
+ *                             example: john@example.com
+ *                           nonHostEmail:
+ *                             type: string
+ *                             description: The email of the user who booked the time slot.
+ *                             example: levi@example.com
  */
-timeRouter.get("/timeslot", Validate(inputForGetTimeSlot), getTimeSlots);
+timeRouter.get("/timeslot", (0, validate_1.Validate)(inputForGetTimeSlot_1.inputForGetTimeSlot), timeslot_1.getTimeSlots);
 /**
  * @openapi
  * /timeslot:
@@ -44,89 +127,197 @@ timeRouter.get("/timeslot", Validate(inputForGetTimeSlot), getTimeSlots);
  *     - TimeSlot
  *     summary: Create a new time slot
  *     requestBody:
- *       description: The time slot to create
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '../utils/components.yml#/CreateTimeSlotRequest'
- *     responses:
- *       201:
- *         description: The time slot was created successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '../utils/components.yml#/CreateTimeSlotResponse'
- *       400:
- *         description: Invalid time slot data provided
- *       500:
- *         description: An error occurred while creating the time slot
- */
-timeRouter.post("/timeslot", Validate(inputForCreateSlot), createTimeSlot);
-/**
- * @openapi
- * /timeslot/{id}:
- *   put:
- *     tags:
- *     - TimeSlot
- *     summary: Book a time slot by its ID
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         description: The ID of the time slot to book
- *         schema:
- *           type: string
- *     requestBody:
- *       description: The user data for booking the time slot
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
  *             properties:
- *               user:
- *                 type: string
+ *               year:
+ *                 type: integer
+ *                 description: The year of the time slot
+ *               month:
+ *                 type: integer
+ *                 description: The month of the time slot
+ *               date:
+ *                 type: integer
+ *                 description: The date of the time slot
+ *               hour:
+ *                 type: integer
+ *                 description: The hour of the time slot
+ *               minutes:
+ *                 type: integer
+ *                 description: The minutes of the time slot
  *             required:
- *               - user
+ *             - year
+ *             - month
+ *             - date
+ *             - hour
+ *             - minutes
  *     responses:
  *       200:
- *         description: The time slot was successfully booked
+ *         description: Returns the newly created time slot
  *         content:
  *           application/json:
  *             schema:
- *       400:
- *         description: Invalid booking data provided
- *       404:
- *         description: The specified time slot was not found
- *       409:
- *         description: The specified time slot is already booked
- *       500:
- *         description: An error occurred while booking the time slot
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     slot created for:
+ *                       type: object
+ *                       description: The newly created time slot object
  */
-timeRouter.put("/timeslot/:id", bookTimeSlot);
+timeRouter.post("/timeslot", (0, validate_1.Validate)(inputForCreateSlot_1.inputForCreateSlot), timeslot_1.createTimeSlot);
+/**
+ * @openapi
+ * /timeslot:
+ *   put:
+ *     tags:
+ *       - TimeSlot
+ *     summary: Book a time slot
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 format: uuid
+ *                 description: ID of the time slot to book
+ *               token:
+ *                 type: string
+ *                 description: Access token for Google Calendar API
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     slot booked for:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           format: uuid
+ *                         hostEmail:
+ *                           type: string
+ *                           format: email
+ *                         nonHostEmail:
+ *                           type: string
+ *                           format: email
+ *                         isBooked:
+ *                           type: boolean
+ *                         start:
+ *                           type: string
+ *                           format: date-time
+ *                         end:
+ *                           type: string
+ *                           format: date-time
+ *       '400':
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message
+ *       '404':
+ *         description: Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message
+ */
+timeRouter.put("/timeslot", timeslot_1.bookTimeSlot);
 /**
  * @openapi
  * /timeslot/{id}:
  *   delete:
  *     tags:
- *     - TimeSlot
- *     summary: Delete a time slot by its ID
+ *       - TimeSlot
+ *     summary: Delete a time slot
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
- *         description: The ID of the time slot to delete
+ *         description: ID of the time slot to delete
  *         schema:
  *           type: string
+ *           format: uuid
  *     responses:
- *       200:
- *         description: The time slot was successfully deleted
- *       404:
- *         description: The specified time slot was not found
- *       500:
- *         description: An error occurred while deleting the time slot
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     slot deleted:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           format: uuid
+ *                         hostEmail:
+ *                           type: string
+ *                           format: email
+ *                         isBooked:
+ *                           type: boolean
+ *                         start:
+ *                           type: string
+ *                           format: date-time
+ *                         end:
+ *                           type: string
+ *                           format: date-time
+ *       '400':
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message
+ *       '404':
+ *         description: Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message
  */
-timeRouter.delete("/timeslot/:id", deleteTimeSlot);
+timeRouter.delete("/timeslot/:id", timeslot_1.deleteTimeSlot);
 // ======================================
-export default timeRouter;
+exports.default = timeRouter;

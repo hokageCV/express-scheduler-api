@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,18 +8,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-export const comparePasswords = (password, hashedPassword) => __awaiter(void 0, void 0, void 0, function* () {
-    const match = yield bcrypt.compare(password, hashedPassword);
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createJWT = exports.hashPassword = exports.comparePasswords = void 0;
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const comparePasswords = (password, hashedPassword) => __awaiter(void 0, void 0, void 0, function* () {
+    const match = yield bcryptjs_1.default.compare(password, hashedPassword);
     return match;
 });
-export const hashPassword = (password) => __awaiter(void 0, void 0, void 0, function* () {
-    const salt = yield bcrypt.genSalt(10);
-    const hash = yield bcrypt.hash(password, salt);
+exports.comparePasswords = comparePasswords;
+const hashPassword = (password) => __awaiter(void 0, void 0, void 0, function* () {
+    const salt = yield bcryptjs_1.default.genSalt(10);
+    const hash = yield bcryptjs_1.default.hash(password, salt);
     return hash;
 });
-export const createJWT = (id, email) => {
-    const token = jwt.sign({ id, email }, process.env.SECRET_STRING);
+exports.hashPassword = hashPassword;
+const createJWT = (id, email) => {
+    const token = jsonwebtoken_1.default.sign({ id, email }, process.env.SECRET_STRING);
     return token;
 };
+exports.createJWT = createJWT;
