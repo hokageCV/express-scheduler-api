@@ -9,10 +9,6 @@ An api to schedule google meets with each other.
 - Get a list of all your meetings
 - Automatically add google meet event to google calendar
 
-### API Documentation
-
-Documetation is created using Swagger. It can be referred [here](https://express-scheduler-api-production.up.railway.app/docs).
-
 ### My Learnings
 
 - Zod
@@ -45,4 +41,4 @@ Then using the calendar API, I function that was creating events in the calendar
 
 After that I created the docker file and created an image of the project.
 
-At last, I deployed the project on Railway. It can be accessed at `https://express-scheduler-api-production.up.railway.app `.
+At last, I deployed the project on Railway.
