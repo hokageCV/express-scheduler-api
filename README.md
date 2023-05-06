@@ -27,7 +27,7 @@ An api to schedule google meets with each other.
 
 First I set up the basic structure like the handlers, routes, models & database.
 
-Initially for the ORM I used prisma. But it seemed alienated and considering the time constraint I switched to mongoose.
+Initially for the ORM I used prisma. But it seemed alienated and considering the time constraint I had selected, I switched to mongoose.
 
 Then I created schema in zod for validation for the input. I liked its simplicity and the way it presents the errors. All the functions out of the box are very useful.
 
